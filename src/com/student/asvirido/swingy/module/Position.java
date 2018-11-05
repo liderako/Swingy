@@ -1,3 +1,5 @@
+package com.student.asvirido.swingy.module;
+
 public class Position {
 	private int x;
 	private int y;
