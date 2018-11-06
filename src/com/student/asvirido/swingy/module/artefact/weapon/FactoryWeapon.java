@@ -13,6 +13,9 @@ public class FactoryWeapon {
         else if (type.equals("SwordWithShield")) {
             return (new SwordWithShield());
         }
-        return (new Fist());
+        else if (type.equals("Fist")) {
+            return (new Fist());
+        }
+        return (null);
     }
 }

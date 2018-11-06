@@ -13,6 +13,9 @@ public class FactoryHelm {
         else if (type.equals("LeatherHelmet")) {
             return (new LeatherHelmet());
         }
-        return (new Hat());
+        else if (type.equals("Hat")) {
+            return (new Hat());
+        }
+        return (null);
     }
 }

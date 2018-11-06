@@ -38,6 +38,9 @@ public class FactoryMonster {
         else if (type.equals("Thief")) {
             return (new Thief());
         }
-        return (new Death());
+        else if (type.equals("Death")) {
+            return (new Death());
+        }
+        return (null);
     }
 }

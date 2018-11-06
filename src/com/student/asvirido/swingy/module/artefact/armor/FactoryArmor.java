@@ -14,6 +14,9 @@ public class FactoryArmor {
         else if (type.equals("MediumArmor")) {
             return (new MediumArmor());
         }
-        return (new Shirt());
+        else if (type.equals("Shirt")) {
+            return (new Shirt());
+        }
+        return (null);
     }
 }
