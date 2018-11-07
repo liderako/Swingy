@@ -6,7 +6,7 @@ import com.student.asvirido.swingy.module.hero.types.Rogue;
 import com.student.asvirido.swingy.module.hero.types.Warrior;
 
 public class FactoryHero {
-    public Hero newHero(final String name, final String type) {
+    static public Hero newHero(final String name, final String type) {
         if (type.equals("Archer")) {
             return (new Archer(name));
         }

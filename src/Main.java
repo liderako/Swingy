@@ -1,3 +1,4 @@
+import com.student.asvirido.swingy.module.Model;
 import com.student.asvirido.swingy.view.console.ConsoleView;
 
 import java.util.Random;
@@ -5,16 +6,20 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) {
-        int randomNum = new Random().nextInt((10 - 1) + 1) + 1;
-        System.out.println(randomNum);
-//        String[] s = {"run", "fight"};
-//        ConsoleView consoleView = new ConsoleView( s);
+//        Model m = new Model();
 //
-//        System.out.println("Please choise command");
-//        System.out.println("run");
-//        System.out.println("fight");
-//        consoleView.input();
-//        System.out.println("You are a dead");
+//        m.createHero();
+//        m.fight("Ork");
+//        m.fight("Ork");
+//        m.fight("Wolf");
+//        m.fight("Bear");
+//        m.fight("BlackBear");
     }
 
+    public void testFight() {
+        Model m = new Model();
+
+        m.createHero();
+
+    }
 }

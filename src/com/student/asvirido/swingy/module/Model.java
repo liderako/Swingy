@@ -1,6 +1,9 @@
 package com.student.asvirido.swingy.module;
 
+import com.student.asvirido.swingy.module.hero.FactoryHero;
 import com.student.asvirido.swingy.module.hero.Hero;
+import com.student.asvirido.swingy.module.monster.FactoryMonster;
+import com.student.asvirido.swingy.module.monster.Monster;
 
 import java.util.Random;
 
@@ -41,24 +44,52 @@ public class Model {
         }
         else if (typeMonster.equals("Thief") && hero.getInventory().getArmor().getType().equals("LightArmor")
                 && hero.getInventory().getHelm().getType().equals("Hood")) {
+            hero.run();
             return (true);
         }
         else if ((new Random().nextInt((10 - 1) + 1) + 1) > 5) {
+            hero.run();
             return (true);
         }
         return (false);
     }
 
+    public void createHero() {
+        hero = FactoryHero.newHero("Antonio", "Archer");
+    }
+
     public boolean fight(final String typeMonster) {
+
+        Monster monster = FactoryMonster.newMonster(typeMonster);
         if (typeMonster.equals("Death")) {
             return (false);
         }
+        else {
+            int i = 0;
+            while (hero.getHp() > 0 && monster.getHp() > 0) {
+                int damageHero = (monster.getDefence() - i) - ((new Random().nextInt((hero.getAttack() * 2) + 1) + hero.getAttack()));
+                int damageMonster = (hero.getDefence() - i) - ((new Random().nextInt((monster.getAttack() * 2) + 1) + monster.getAttack()));
+
+                if (damageHero < 0) {
+                    monster.setHp(monster.getHp() - (damageHero * -1));
+                }
+                if (monster.getHp() <= 0) {
+                    System.out.println("User win");
+                    return (true);
+                }
+                if (damageMonster < 0) {
+                    hero.setHp(hero.getHp() - (damageMonster * -1));
+                }
+                if (hero.getHp() <= 0) {
+                    System.out.println("Monster win");
+                    return (false);
+                }
+                System.out.println("Monster Hp " + monster.getHp() + " attack now " + damageMonster * -1);
+                System.out.println("Hero hp " + hero.getHp() + " attack now " + damageHero * -1);
+                i++;
+            }
+        }
         return (true);
-//        else {
-//            int hpHero = hero.getHp();
-//            int attackHero = hero.getAttack();
-//            int
-//        }
     }
 
     public final Hero getHero() {

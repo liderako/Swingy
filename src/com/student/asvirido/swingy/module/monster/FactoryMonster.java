@@ -4,7 +4,7 @@ import com.student.asvirido.swingy.module.monster.types.animal.*;
 import com.student.asvirido.swingy.module.monster.types.humanoid.*;
 
 public class FactoryMonster {
-    public Monster newMonster(String type) {
+    static public Monster newMonster(String type) {
         if (type.equals("Bear")) {
             return (new Bear());
         }
