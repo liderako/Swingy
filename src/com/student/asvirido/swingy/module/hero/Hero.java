@@ -46,6 +46,10 @@ public class Hero extends AliveObject{
         return (super.getHp() + inventory.getHelm().getBonusHp());
     }
 
+    public Position getPosition() {
+        return (position);
+    }
+
     public Inventory getInventory() {
         return (inventory);
     }
