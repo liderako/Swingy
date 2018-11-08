@@ -66,9 +66,11 @@ public class Model {
         }
         else {
             int i = 0;
+            int damageHero;
+            int damageMonster;
             while (hero.getHp() > 0 && monster.getHp() > 0) {
-                int damageHero = (monster.getDefence() - i) - ((new Random().nextInt((hero.getAttack() * 2) + 1) + hero.getAttack()));
-                int damageMonster = (hero.getDefence() - i) - ((new Random().nextInt((monster.getAttack() * 2) + 1) + monster.getAttack()));
+                damageHero = (monster.getDefence() - i) - ((new Random().nextInt((hero.getAttack() * 2) + 1) + hero.getAttack()));
+                damageMonster = (hero.getDefence() - i) - ((new Random().nextInt((monster.getAttack() * 2) + 1) + monster.getAttack()));
 
                 if (damageHero < 0) {
                     monster.setHp(monster.getHp() - (damageHero * -1));

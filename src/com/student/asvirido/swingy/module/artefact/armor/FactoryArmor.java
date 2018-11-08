@@ -4,18 +4,23 @@ import com.student.asvirido.swingy.module.artefact.armor.types.*;
 
 public class FactoryArmor {
 
-    public Armor newArmor(String type) {
-        if (type.equals("HeavyArmor")) {
-            return (new HeavyArmor());
+    static public Armor newArmor(String type) {
+        try {
+            switch (type) {
+                case "HeavyArmor":
+                    return (new HeavyArmor());
+                case "LightArmor":
+                    return (new LightArmor());
+                case "MediumArmor":
+                    return (new MediumArmor());
+                case "Shirt":
+                    return (new Shirt());
+                default:
+                    throw new Exception("unknown type armor");
+            }
         }
-        else if (type.equals("LightArmor")) {
-            return (new LightArmor());
-        }
-        else if (type.equals("MediumArmor")) {
-            return (new MediumArmor());
-        }
-        else if (type.equals("Shirt")) {
-            return (new Shirt());
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return (null);
     }

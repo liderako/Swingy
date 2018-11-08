@@ -3,18 +3,23 @@ package com.student.asvirido.swingy.module.artefact.weapon;
 import com.student.asvirido.swingy.module.artefact.weapon.types.*;
 
 public class FactoryWeapon {
-    public Weapon newArmor(String type) {
-        if (type.equals("Bow")) {
-            return (new Bow());
+    public static Weapon newWeapon(String type) {
+        try {
+            switch (type) {
+                case "Fist":
+                    return (new Fist());
+                case "SwordWithShield":
+                    return (new SwordWithShield());
+                case "Dagger":
+                    return (new Dagger());
+                case "Bow":
+                    return (new Bow());
+                default:
+                    throw new Exception("unknown type weapon");
+            }
         }
-        else if (type.equals("Dagger")) {
-            return (new Dagger());
-        }
-        else if (type.equals("SwordWithShield")) {
-            return (new SwordWithShield());
-        }
-        else if (type.equals("Fist")) {
-            return (new Fist());
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return (null);
     }

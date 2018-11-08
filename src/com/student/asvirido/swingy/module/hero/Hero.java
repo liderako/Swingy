@@ -69,13 +69,14 @@ public class Hero extends AliveObject{
 
     public void increaseLevel() {
         int needExp = (level * 1000 + (level - 1) * (level - 1) * 450);
+
         if (this.getExp() > needExp) {
            this.level += 1;
            super.setMaxHp(super.getMaxHp() + 25);
            super.setHp(super.getMaxHp());
            super.setAttack(super.getAttack() + 10);
            super.setDefence(super.getDefence() + 10);
-           super.setExp(0);
+           super.setExp(this.getExp() - needExp);
         }
     }
 

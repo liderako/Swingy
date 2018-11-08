@@ -1,5 +1,6 @@
 package com.student.asvirido.swingy.module.hero.types;
 
+import com.student.asvirido.swingy.module.hero.FactoryHero;
 import com.student.asvirido.swingy.module.hero.Hero;
 import com.student.asvirido.swingy.module.hero.HeroBuilder;
 import com.student.asvirido.swingy.module.artefact.Inventory;
@@ -18,3 +19,4 @@ public class Archer extends Hero {
         );
     }
 }
+

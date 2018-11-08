@@ -3,18 +3,23 @@ package com.student.asvirido.swingy.module.artefact.helm;
 import com.student.asvirido.swingy.module.artefact.helm.types.*;
 
 public class FactoryHelm {
-    public Helm newHelm(String type) {
-        if (type.equals("Hood")) {
-            return (new Hood());
+    public static Helm newHelm(String type) {
+        try {
+            switch (type) {
+                case "Hood":
+                    return (new Hood());
+                case "IronHelmet":
+                    return (new IronHelmet());
+                case "LeatherHelmet":
+                    return (new LeatherHelmet());
+                case "Hat":
+                    return (new Hat());
+                default:
+                    throw new Exception("unknown type helm");
+            }
         }
-        else if (type.equals("IronHelmet")) {
-            return (new IronHelmet());
-        }
-        else if (type.equals("LeatherHelmet")) {
-            return (new LeatherHelmet());
-        }
-        else if (type.equals("Hat")) {
-            return (new Hat());
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return (null);
     }
