@@ -18,7 +18,7 @@ public class HeroBuilder {
     }
 
     public HeroBuilder type(final String type) {
-        this.name = type;
+        this.type = type;
         return (this);
     }
 

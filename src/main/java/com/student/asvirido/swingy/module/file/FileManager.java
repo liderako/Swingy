@@ -2,11 +2,10 @@ package com.student.asvirido.swingy.module.file;
 import java.io.*;
 
 public class FileManager {
-    private String fileName;
+    static public final String fileName = "data.save";
     private static FileWriter writer;
 
     public FileManager() {
-        this.fileName = "data.save";
         try {
             createWriter();
         } catch(IOException e) {
@@ -49,7 +48,17 @@ public class FileManager {
         }
     }
 
+    public void deleteFile() {
+        File file = new File(fileName);
+
+        file.delete();
+    }
+
     private void createWriter() throws IOException {
         writer = new FileWriter(this.fileName, true);
+    }
+
+    public String getFileName() {
+        return (fileName);
     }
 }
