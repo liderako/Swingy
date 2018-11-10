@@ -1,4 +1,4 @@
-package com.student.asvirido.swingy.module;
+package com.student.asvirido.swingy.module.hero;
 
 public class Position {
 	private int x;
