@@ -3,7 +3,7 @@ package com.student.asvirido.swingy.module.artefact.helm;
 import com.student.asvirido.swingy.module.artefact.helm.types.*;
 
 public class FactoryHelm {
-    public static Helm newHelm(String type) {
+    static public  Helm newHelm(String type) {
         try {
             switch (type) {
                 case "Hood":
