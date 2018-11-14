@@ -5,7 +5,6 @@ import com.student.asvirido.swingy.module.monster.types.humanoid.*;
 
 public class FactoryMonster {
     static public Monster newMonster(String type) {
-
         try {
             switch (type) {
                 case "Bear":

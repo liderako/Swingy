@@ -12,6 +12,7 @@ public class Monk extends Hero {
                 .attack(35)
                 .defence(20)
                 .hp(350)
+                .maxHp(350)
                 .experience(0)
                 .level(1)
                 .inventory(new Inventory())

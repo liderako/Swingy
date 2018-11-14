@@ -1,6 +1,5 @@
 package com.student.asvirido.swingy.module.artefact.weapon;
 
-import java.lang.String;
 import com.student.asvirido.swingy.module.artefact.weapon.types.*;
 
 public class FactoryWeapon {

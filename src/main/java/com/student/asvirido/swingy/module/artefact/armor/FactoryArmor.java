@@ -3,7 +3,6 @@ package com.student.asvirido.swingy.module.artefact.armor;
 import com.student.asvirido.swingy.module.artefact.armor.types.*;
 
 public class FactoryArmor {
-
     static public Armor newArmor(String type) {
         try {
             switch (type) {

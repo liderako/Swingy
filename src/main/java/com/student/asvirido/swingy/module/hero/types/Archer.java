@@ -13,6 +13,7 @@ public class Archer extends Hero {
                 .attack(40)
                 .defence(25)
                 .hp(200)
+                .maxHp(200)
                 .experience(0)
                 .level(1)
                 .inventory(new Inventory())

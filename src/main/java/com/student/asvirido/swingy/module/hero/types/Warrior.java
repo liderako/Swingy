@@ -12,6 +12,7 @@ public class Warrior extends Hero {
                 .attack(20)
                 .defence(50)
                 .hp(500)
+                .maxHp(500)
                 .experience(0)
                 .level(1)
                 .inventory(new Inventory())

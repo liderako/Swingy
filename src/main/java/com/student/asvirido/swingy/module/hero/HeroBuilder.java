@@ -6,6 +6,7 @@ public class HeroBuilder {
     private String name;
     private String type;
     private int hp;
+    private int maxHp;
     private int attack;
     private int defence;
     private int experience;
@@ -23,6 +24,11 @@ public class HeroBuilder {
     }
 
     public HeroBuilder hp(final int hp) {
+        this.hp = hp;
+        return (this);
+    }
+
+    public HeroBuilder maxHp(final int hp) {
         this.hp = hp;
         return (this);
     }
@@ -54,6 +60,10 @@ public class HeroBuilder {
 
     public int getAttack() {
         return (attack);
+    }
+
+    public int getMaxHp() {
+        return (maxHp);
     }
 
     public int getDefence() {

@@ -12,6 +12,7 @@ public class Rogue extends Hero {
                 .attack(50)
                 .defence(10)
                 .hp(150)
+                .maxHp(150)
                 .experience(0)
                 .level(1)
                 .inventory(new Inventory())

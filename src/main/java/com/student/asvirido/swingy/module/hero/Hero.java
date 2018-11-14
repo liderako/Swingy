@@ -19,7 +19,7 @@ public class Hero extends AliveObject{
         this.setDefence(heroBuilder.getDefence());
         this.setExp(heroBuilder.getExperience());
         this.setHp(heroBuilder.getHp());
-        this.setMaxHp(heroBuilder.getHp());
+        this.setMaxHp(heroBuilder.getMaxHp());
         this.name = heroBuilder.getName();
         this.level = heroBuilder.getLevel();
         this.inventory = heroBuilder.getInventory();
@@ -126,5 +126,19 @@ public class Hero extends AliveObject{
         tmp = position;
         position = oldPosition;
         oldPosition = tmp;
+    }
+
+    public void log() {
+        System.out.println("Type:" + super.getType());
+        System.out.println("Name:" + name);
+        System.out.println("hp:" + getHp());
+        System.out.println("hpMax:" + super.getMaxHp());
+        System.out.println("attack:" + this.getAttack());
+        System.out.println("defence:" + this.getDefence());
+        System.out.println("exp:" + super.getExp());
+        System.out.println("level:" + level);
+        System.out.println("Weapon:" + getInventory().getWeapon().getType());
+        System.out.println("Armor:" + getInventory().getArmor().getType());
+        System.out.println("Helm:" + getInventory().getHelm().getType());
     }
 }
