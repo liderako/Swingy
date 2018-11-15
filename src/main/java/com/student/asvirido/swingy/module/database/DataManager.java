@@ -1,11 +1,13 @@
 package com.student.asvirido.swingy.module.database;
 
 import com.student.asvirido.swingy.module.artefact.Inventory;
+import com.student.asvirido.swingy.module.artefact.InventoryBuilder;
 import com.student.asvirido.swingy.module.artefact.armor.FactoryArmor;
 import com.student.asvirido.swingy.module.artefact.helm.FactoryHelm;
 import com.student.asvirido.swingy.module.artefact.weapon.FactoryWeapon;
 import com.student.asvirido.swingy.module.hero.Hero;
 import com.student.asvirido.swingy.module.hero.HeroBuilder;
+import org.json.simple.JSONObject;
 
 import java.sql.*;
 
@@ -24,16 +26,15 @@ public class DataManager {
         this.connection.close();
     }
 
-    public boolean saveHero(final Hero hero) throws SQLException {
+    public boolean createHero(final Hero hero) throws SQLException {
         String sql;
-            sql = "insert into heroes(id, type, name, level, exp, hp, max_hp, attack, defence, weapon, armor, helm)" +
+            sql = "insert into heroes(id, type, name, level, exp, hp, attack, defence, weapon, armor, helm)" +
                     "values(" +
                     "'" + getIdType(hero.getType()) + "'," +
                     "'" + hero.getType() + "'," +
                     "'" + hero.getName() + "'," +
                     hero.getLevel() + "," +
                     hero.getExp() + "," +
-                    hero.getHp() + "," +
                     hero.getMaxHp() + "," +
                     hero.getAttack() + "," +
                     hero.getDefence() + "," +
@@ -45,28 +46,42 @@ public class DataManager {
         return (true);
     }
 
+    public boolean saveHero(final Hero hero) throws SQLException {
+        String sql;
+        sql = "update heroes" +
+                " set level = " + hero.getLevel() +
+                ", exp = " + hero.getExp() +
+                ", hp = " + hero.getMaxHp() +
+                ", attack = " + (hero.getAttack() - hero.getInventory().getWeapon().getDamage()) +
+                ", defence = " + (hero.getDefence() - hero.getInventory().getArmor().getDefence()) +
+                ", weapon = '" + hero.getInventory().getWeapon().getType() +
+                "', armor = '" + hero.getInventory().getArmor().getType() +
+                "', helm = '" + hero.getInventory().getHelm().getType() +
+                "' where id = " + getIdType(hero.getType()) +";";
+        System.out.println(sql);
+        this.statement.executeUpdate(sql);
+        return (true);
+    }
+
     public Hero loadHero(final String type) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM online WHERE ID";
 
         ResultSet r = statement.executeQuery("select * from heroes where " + "heroes.ID = " + getIdType(type));
-        Inventory i = new Inventory();
-
-        i.setWeapon(FactoryWeapon.newWeapon(r.getString(10)));
-        i.setArmor(FactoryArmor.newArmor(r.getString(11)));
-        i.setHelm(FactoryHelm.newHelm(r.getString(12)));
-
         Hero hero = new HeroBuilder()
                 .type(r.getString(2))
                 .name(r.getString(3))
                 .level(r.getInt(4))
                 .experience(r.getInt(5))
                 .hp(r.getInt(6))
-                .maxHp(r.getInt(7))
-                .attack(r.getInt(8))
-                .defence(r.getInt(9))
-                .inventory(i)
+                .maxHp(r.getInt(6))
+                .attack(r.getInt(7))
+                .defence(r.getInt(8))
+                .inventory(new InventoryBuilder()
+                        .weapon(r.getString(9))
+                        .armor(r.getString(10))
+                        .helm(r.getString(11))
+                        .build())
                 .build();
-        return hero;
+        return (hero);
     }
 
     private void createTable() throws SQLException {
@@ -77,7 +92,6 @@ public class DataManager {
                 "level int not null," +
                 "exp int not null," +
                 "hp int not null," +
-                "max_hp int not null," +
                 "attack int not null," +
                 "defence int not null," +
                 "weapon varchar(64) not null," +
@@ -86,6 +100,24 @@ public class DataManager {
                 "PRIMARY KEY(ID)" +
                 ");";
         this.statement.executeUpdate(sql);
+    }
+
+    public JSONObject getHeroes() throws SQLException{
+        JSONObject obj = new JSONObject();
+        ResultSet r = statement.executeQuery("select type from heroes");
+//        ResultSetMetaData rsmd = r.getMetaData();
+
+//        int size = rsmd.getColumnCount();
+//        for (int i = 1; i <= size; i++ ) {
+//            String name = rsmd.getColumnName(i);
+            System.out.println(r.getString(1));
+//        }
+        obj.put("Warrior", "null");
+        obj.put("Archer", "null");
+        obj.put("Monk", "null");
+        obj.put("Rogue", "null");
+        System.out.println(obj);
+        return (obj);
     }
 
     private int getIdType(final String type) {

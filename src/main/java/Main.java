@@ -1,4 +1,5 @@
 import com.student.asvirido.swingy.module.Model;
+import com.student.asvirido.swingy.module.artefact.armor.types.HeavyArmor;
 import com.student.asvirido.swingy.module.artefact.helm.FactoryHelm;
 import com.student.asvirido.swingy.module.artefact.helm.Helm;
 import com.student.asvirido.swingy.module.artefact.weapon.FactoryWeapon;
@@ -13,16 +14,17 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
         Model model = new Model();
-        Hero hero = FactoryHero.newHero("asvirido", "Warrior");
-        Hero hero2 = FactoryHero.newHero("asviridoArcher", "Archer");
-        model.dataManager.saveHero(hero);
-        model.dataManager.saveHero(hero2);
 
-        Hero tmp = model.dataManager.loadHero(hero.getType());
-        tmp.log();
-        tmp = model.dataManager.loadHero(hero2.getType());
-        System.out.println("_________");
-        tmp.log();
+        model.selectHero();
+//        Hero hero2 = FactoryHero.newHero("asviridoArcher", "Archer");
+//        System.out.println(model.createHero("asvirido", "Warrior"));
+//        System.out.println(model.createHero("asvirido", "Archer"));
+
+        //model.dataManager.createHero(hero2);
+
+//        Hero tmp = model.dataManager.loadHero("Archer");
+//        model.dataManager.saveHero(tmp);
+
         model.end();
     }
 }

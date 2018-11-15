@@ -5,14 +5,16 @@ import com.student.asvirido.swingy.module.hero.FactoryHero;
 import com.student.asvirido.swingy.module.hero.Hero;
 import com.student.asvirido.swingy.module.monster.FactoryMonster;
 import com.student.asvirido.swingy.module.monster.Monster;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Random;
 
 
 public class Model {
     private Hero hero;
-    public DataManager dataManager;
+    private DataManager dataManager;
 
     public Model() throws Exception {
         dataManager = new DataManager();
@@ -31,6 +33,10 @@ public class Model {
         else if (direction.equals("West")) {
             hero.moveLeft();
         }
+    }
+
+    public JSONObject selectHero() throws SQLException {
+        return(dataManager.getHeroes());
     }
 
     public boolean endMission() {
@@ -61,8 +67,14 @@ public class Model {
         return (false);
     }
 
-    public boolean createHero(final String name, final String type) throws IOException{
+    public boolean createHero(final String name, final String type) throws IOException, SQLException{
         hero = FactoryHero.newHero(name, type);
+        try {
+            dataManager.createHero(hero);
+        }
+        catch (SQLException e) {
+            return (false);
+        }
         return (true);
     }
 

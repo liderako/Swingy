@@ -131,7 +131,7 @@ public class Hero extends AliveObject{
     public void log() {
         System.out.println("Type:" + super.getType());
         System.out.println("Name:" + name);
-        System.out.println("hp:" + getHp());
+        System.out.println("hp:" + this.getHp());
         System.out.println("hpMax:" + super.getMaxHp());
         System.out.println("attack:" + this.getAttack());
         System.out.println("defence:" + this.getDefence());

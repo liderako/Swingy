@@ -28,8 +28,8 @@ public class HeroBuilder {
         return (this);
     }
 
-    public HeroBuilder maxHp(final int hp) {
-        this.hp = hp;
+    public HeroBuilder maxHp(final int maxHp) {
+        this.maxHp = maxHp;
         return (this);
     }
 
