@@ -46,6 +46,13 @@ public class DataManager {
         return (true);
     }
 
+    public boolean deleteHero(final String type) throws SQLException {
+        String sql = "delete from heroes" +
+                " where id = " + getIdType(type) + ";";
+        this.statement.executeUpdate(sql);
+        return (true);
+    }
+
     public boolean saveHero(final Hero hero) throws SQLException {
         String sql;
         sql = "update heroes" +
@@ -104,19 +111,25 @@ public class DataManager {
 
     public JSONObject getHeroes() throws SQLException{
         JSONObject obj = new JSONObject();
-        ResultSet r = statement.executeQuery("select type from heroes");
-//        ResultSetMetaData rsmd = r.getMetaData();
+        ResultSet rType = statement.executeQuery("select type, name from heroes");
 
-//        int size = rsmd.getColumnCount();
-//        for (int i = 1; i <= size; i++ ) {
-//            String name = rsmd.getColumnName(i);
-            System.out.println(r.getString(1));
-//        }
-        obj.put("Warrior", "null");
-        obj.put("Archer", "null");
-        obj.put("Monk", "null");
-        obj.put("Rogue", "null");
-        System.out.println(obj);
+        while (rType.next()) {
+            String type = rType.getString("type");
+            String name = rType.getString("name");
+            obj.put(type, name);
+        }
+        if (obj.get("Monk") == null) {
+            obj.put("Monk", "not exists");
+        }
+        if (obj.get("Warrior") == null) {
+            obj.put("Warrior", "not exists");
+        }
+        if (obj.get("Archer") == null) {
+            obj.put("Archer", "not exists");
+        }
+        if (obj.get("Rogue") == null) {
+            obj.put("Rogue", "not exists");
+        }
         return (obj);
     }
 

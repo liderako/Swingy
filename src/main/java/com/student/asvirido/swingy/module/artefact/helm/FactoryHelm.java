@@ -2,6 +2,8 @@ package com.student.asvirido.swingy.module.artefact.helm;
 
 import com.student.asvirido.swingy.module.artefact.helm.types.*;
 
+import java.util.Random;
+
 public class FactoryHelm {
     static public  Helm newHelm(String type) {
         try {
@@ -22,5 +24,19 @@ public class FactoryHelm {
             System.out.println(e.getMessage());
         }
         return (null);
+    }
+
+    static public String randomType() {
+        int result = new Random().nextInt(4 - 1) + 1;
+
+        switch (result) {
+            case 1:
+                return ("IronHelmet");
+            case 2:
+                return ("LeatherHelmet");
+            case 3:
+                return ("Hood");
+        }
+        return ("Hat");
     }
 }

@@ -15,6 +15,7 @@ import java.util.Random;
 public class Model {
     private Hero hero;
     private DataManager dataManager;
+    private Monster monster;
 
     public Model() throws Exception {
         dataManager = new DataManager();
@@ -51,7 +52,19 @@ public class Model {
         return (false);
     }
 
-    public boolean run(final String typeMonster) {
+    public boolean loadHero(final String typeClass) throws SQLException {
+        try {
+            hero = dataManager.loadHero(typeClass);
+            return (true);
+        }
+        catch (SQLException e) {
+            return (false);
+        }
+    }
+
+    public boolean run() {
+        final String typeMonster = this.monster.getType();
+
         if (typeMonster.equals("WhiteWolf")) {
             return (false);
         }
@@ -67,19 +80,41 @@ public class Model {
         return (false);
     }
 
-    public boolean createHero(final String name, final String type) throws IOException, SQLException{
-        hero = FactoryHero.newHero(name, type);
+    public boolean deleteHero() throws SQLException {
         try {
-            dataManager.createHero(hero);
+            dataManager.deleteHero(hero.getType());
+            hero = null;
+            return (true);
         }
         catch (SQLException e) {
+           return false;
+        }
+    }
+
+    public boolean createHero(final String name, final String type) throws IOException, SQLException{
+        JSONObject heroes = dataManager.getHeroes();
+        if (type.equals("Warrior") && !heroes.get("Warrior").equals("not exists")) {
             return (false);
         }
+        else if (type.equals("Archer") && !heroes.get("Archer").equals("not exists")) {
+            return (false);
+        }
+        else if (type.equals("Monk") && !heroes.get("Monk").equals("not exists")) {
+            return (false);
+        }
+        else if (type.equals("Rogue") && !heroes.get("Rogue").equals("not exists")) {
+            return (false);
+        }
+        hero = FactoryHero.newHero(name, type);
+        dataManager.createHero(hero);
         return (true);
     }
 
-    public boolean fight(final String typeMonster) {
-        Monster monster = FactoryMonster.newMonster(typeMonster);
+    public boolean fight() {
+        final String typeMonster = this.monster.getType();
+
+        this.monster = FactoryMonster.newMonster(this.monster.getType());
+
         if (typeMonster.equals("Death")) {
             return (false);
         }
@@ -108,12 +143,108 @@ public class Model {
         return (true);
     }
 
-    public final Hero getHero() {
-        return (hero);
+    public boolean findMonster() {
+        if (new Random().nextInt(10 - 1) > 5) {
+            generateMonster();
+            return (true);
+        }
+        else if (hero.getLevel() >= 7) {
+            generateMonster();
+            return (true);
+        }
+        return (false);
+    }
+
+    public int getAmountHeroes() throws SQLException {
+        int amount = 0;
+        JSONObject heroes = selectHero();
+
+        if (!heroes.get("Warrior").equals("not exists")) {
+            amount++;
+        }
+        if (!heroes.get("Monk").equals("not exists")) {
+            amount++;
+        }
+        if (!heroes.get("Rogue").equals("not exists")) {
+            amount++;
+        }
+        if (!heroes.get("Archer").equals("not exists")) {
+            amount++;
+        }
+        return (amount);
+    }
+
+    public JSONObject generataLoot() {
+        JSONObject loot = new JSONObject();
+        int resTypeLoot = new Random().nextInt(4 - 1) + 1;
+        int resType = new Random().nextInt(5 - 1) + 1;
+
+        if (resTypeLoot == 1) {
+            switch (resType) {
+                case 1:
+                    loot.put("Helm", "Hood");
+                    break ;
+                case 2:
+                    loot.put("Helm", "IronHelmet");
+                    break ;
+                case 3:
+                    loot.put("Helm", "LeatherHelmet");
+                    break ;
+                case 4:
+                    loot.put("Helm", "Hat");
+                    break ;
+            }
+        }
+        else if (resTypeLoot == 2) {
+            switch (resType) {
+                case 1:
+                    loot.put("Weapon", "Fist");
+                    break ;
+                case 2:
+                    loot.put("Weapon", "SwordWithShield");
+                    break ;
+                case 3:
+                    loot.put("Weapon", "Dagger");
+                    break ;
+                case 4:
+                    loot.put("Weapon", "Bow");
+                    break ;
+            }
+        }
+        else {
+            switch (resType) {
+                case 1:
+                    loot.put("Armor","HeavyArmor");
+                    break ;
+                case 2:
+                    loot.put("Armor","LightArmor");
+                    break ;
+                case 3:
+                    loot.put("Armor","MediumArmor");
+                    break ;
+                case 4:
+                    loot.put("Armor","Shirt");
+                    break ;
+            }
+        }
+        return (loot);
     }
 
     public void end() throws Exception {
         dataManager.end();
+    }
+
+    public final Hero getHero() {
+        return (hero);
+    }
+
+    public final Monster getMonster() { return (monster); }
+
+    private void generateMonster() {
+        if (hero.getLevel() >= 7) {
+            this.monster = FactoryMonster.newMonster("Death");
+        }
+        this.monster = FactoryMonster.newMonster(FactoryMonster.randomType());
     }
 }
 

@@ -2,6 +2,8 @@ package com.student.asvirido.swingy.module.artefact.weapon;
 
 import com.student.asvirido.swingy.module.artefact.weapon.types.*;
 
+import java.util.Random;
+
 public class FactoryWeapon {
     public static Weapon newWeapon(String type) {
         try {
@@ -22,5 +24,19 @@ public class FactoryWeapon {
             System.out.println(e.getMessage());
         }
         return (null);
+    }
+
+    static public String randomType() {
+        int result = new Random().nextInt(4 - 1) + 1;
+
+        switch (result) {
+            case 1:
+                return ("SwordWithShield");
+            case 2:
+                return ("Dagger");
+            case 3:
+                return ("Bow");
+        }
+        return ("Fist");
     }
 }
