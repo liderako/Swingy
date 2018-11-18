@@ -14,7 +14,7 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        Controller controller = new Controller(1);
+        Controller controller = new Controller(2);
 
         controller.run();
         controller.end();

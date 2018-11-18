@@ -3,29 +3,71 @@ package com.student.asvirido.swingy.controller;
 import com.student.asvirido.swingy.module.Model;
 import com.student.asvirido.swingy.module.hero.Hero;
 import com.student.asvirido.swingy.view.console.*;
+import com.student.asvirido.swingy.view.gui.GameView;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 public class Controller {
-    private Model   model;
-    private int     status;
+     private Model   model;
+     private int     status;
+     private  GameView gameView;
 
-    public Controller(int status) throws Exception {
+     public Controller(int status) throws Exception {
         model = new Model();
         this.status = status;
-    }
+     }
 
-    public void run() throws SQLException, IOException {
+    public void run() throws SQLException, IOException,InterruptedException {
         String[] view = new String[] {"start"};
 
-        while (true) {
-            view = runGame(view);
-            if (view.equals("end")) {
-                break ;
+        if (status == 1) {
+            while (true) {
+                view = runGame(view);
+                if (view[0].equals("end")) {
+                    break;
+                }
             }
         }
+        else if (status == 2) {
+            gameView = new GameView();
+
+            while (true) {
+                view = runGameGui(view);
+                if (view[0].equals("end")) {
+                    break;
+                }
+                System.out.println(view[0]);
+                TimeUnit.SECONDS.sleep(1);
+            }
+        }
+    }
+
+    private String[] runGameGui(String[] view) throws SQLException, IOException {
+         if (view[0].equals("start")) {
+             gameView.displayStartView();
+             String res = gameView.getStatusStartView();
+             if (res.equals("Create Hero")) {
+                 gameView.switchOffStartView();
+                 return (new String[] {"Create Hero"});
+             }
+             else if (res.equals("Select Hero")) {
+                 gameView.switchOffStartView();
+                 return (new String[] {"Select Hero"});
+             }
+             else {
+                 return (new String[] {"start"});
+             }
+         }
+         else if (view[0].equals("Create Hero")) {
+             return (new String[] {"Create Hero"});
+         }
+         else if (view[0].equals("Select Hero")) {
+             return (new String[] {"Select Hero"});
+         }
+         return (new String[] {"start"});
     }
 
     private String[] runGame(String[] view) throws SQLException, IOException {
@@ -121,8 +163,9 @@ public class Controller {
                 }
                 return (new String[] {"game"});
             }
+            return (new String[] {"start"});
         }
-        return (new String[] {"start"});
+        return (new String[] {"end"});
     }
 
     public void end() throws Exception {
