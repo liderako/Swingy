@@ -1,12 +1,9 @@
 package com.student.asvirido.swingy.module.artefact;
 
 import com.student.asvirido.swingy.module.artefact.armor.Armor;
-import com.student.asvirido.swingy.module.artefact.armor.FactoryArmor;
 import com.student.asvirido.swingy.module.artefact.armor.types.Shirt;
-import com.student.asvirido.swingy.module.artefact.helm.FactoryHelm;
 import com.student.asvirido.swingy.module.artefact.helm.Helm;
 import com.student.asvirido.swingy.module.artefact.helm.types.Hat;
-import com.student.asvirido.swingy.module.artefact.weapon.FactoryWeapon;
 import com.student.asvirido.swingy.module.artefact.weapon.Weapon;
 import com.student.asvirido.swingy.module.artefact.weapon.types.Fist;
 

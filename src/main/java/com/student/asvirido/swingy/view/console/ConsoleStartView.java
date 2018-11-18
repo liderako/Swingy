@@ -9,11 +9,11 @@ public class ConsoleStartView extends ConsoleView {
     public String[] startView(int amount) {
         String s = input();
 
-        if (s.equals("Create hero") && amount == 4) {
+        if (s.equals("Create Hero") && amount == 4) {
             System.out.println("You can't create hero. You need select already exists hero");
             s = "Select hero";
         }
-        else if (s.equals("Select hero") && amount == 0) {
+        else if (s.equals("Select Hero") && amount == 0) {
             System.out.println("You can't select hero. You need create hero");
             s = "Create Hero";
         }

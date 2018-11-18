@@ -9,7 +9,7 @@ public class Rogue extends Hero {
         super(new HeroBuilder()
                 .name(name)
                 .type("Rogue")
-                .attack(50)
+                .attack(45)
                 .defence(10)
                 .hp(150)
                 .maxHp(150)

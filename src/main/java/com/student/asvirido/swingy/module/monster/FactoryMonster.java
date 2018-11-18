@@ -6,31 +6,31 @@ import com.student.asvirido.swingy.module.monster.types.humanoid.*;
 import java.util.Random;
 
 public class FactoryMonster {
-    static public Monster newMonster(String type) {
+    static public Monster newMonster(String type, int level) {
         try {
             switch (type) {
                 case "Bear":
-                    return (new Bear());
+                    return (new Bear(level));
                 case "BlackBear":
-                    return (new BlackBear());
+                    return (new BlackBear(level));
                 case "GrayWolf":
-                    return (new GrayWolf());
+                    return (new GrayWolf(level));
                 case "BlackWolf":
-                    return (new BlackWolf());
+                    return (new BlackWolf(level));
                 case "Spider":
-                    return (new Spider());
+                    return (new Spider(level));
                 case "Tiger":
-                    return (new Tiger());
+                    return (new Tiger(level));
                 case "WhiteWolf":
-                    return (new WhiteWolf());
+                    return (new WhiteWolf(level));
                 case "Wolf":
-                    return (new Wolf());
+                    return (new Wolf(level));
                 case "Goblin":
-                    return (new Goblin());
+                    return (new Goblin(level));
                 case "Ork":
-                    return (new Ork());
+                    return (new Ork(level));
                 case "Thief":
-                    return (new Thief());
+                    return (new Thief(level));
                 case "Death":
                     return (new Death());
                 default: throw new Exception("unknown type monster");

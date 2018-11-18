@@ -17,6 +17,6 @@ public class ConsoleSelectView extends ConsoleView {
             System.out.println("____________________");
         }
         String s = input();
-        return (new String[] {"battle", s});
+        return (new String[] {"game", s});
     }
 }

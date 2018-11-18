@@ -4,13 +4,13 @@ import com.student.asvirido.swingy.module.monster.Monster;
 import com.student.asvirido.swingy.module.monster.MonsterBuilder;
 
 public class WhiteWolf extends Monster {
-    public WhiteWolf() {
+    public WhiteWolf(int level) {
         super(new MonsterBuilder()
                 .type("WhiteWolf")
-                .attack(25)
-                .defence(5)
-                .hp(100)
-                .exp(250)
+                .attack(55 * level)
+                .defence(55 * level)
+                .hp(250 * level)
+                .exp(250 / level)
         );
     }
 }

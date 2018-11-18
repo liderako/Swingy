@@ -65,7 +65,6 @@ public class DataManager {
                 "', armor = '" + hero.getInventory().getArmor().getType() +
                 "', helm = '" + hero.getInventory().getHelm().getType() +
                 "' where id = " + getIdType(hero.getType()) +";";
-        System.out.println(sql);
         this.statement.executeUpdate(sql);
         return (true);
     }

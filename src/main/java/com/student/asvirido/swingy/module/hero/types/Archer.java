@@ -10,7 +10,7 @@ public class Archer extends Hero {
         super(new HeroBuilder()
                 .name(name)
                 .type("Archer")
-                .attack(40)
+                .attack(30)
                 .defence(25)
                 .hp(200)
                 .maxHp(200)

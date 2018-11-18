@@ -21,9 +21,9 @@ public class ConsoleCreateHeroView extends ConsoleView {
 
         for (Hero x : hero) {
             System.out.println("|Attributes hero: " + x.getType());
-            System.out.println("|Attack: " + x.getAttack());
-            System.out.println("|Defence: " + x.getDefence());
-            System.out.println("|Hp: " + x.getHp());
+            System.out.println("|Attack: " + (x.getAttack() - x.getInventory().getWeapon().getDamage()));
+            System.out.println("|Defence: " + (x.getDefence() - x.getInventory().getArmor().getDefence()));
+            System.out.println("|Hp: " + (x.getHp() - x.getInventory().getArmor().getDefence()));
             System.out.println("|_______________________|");
         }
         System.out.println("Input type hero");

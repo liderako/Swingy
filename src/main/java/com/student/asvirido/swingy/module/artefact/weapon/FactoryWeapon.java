@@ -16,6 +16,8 @@ public class FactoryWeapon {
                     return (new Dagger());
                 case "Bow":
                     return (new Bow());
+                case "Knife":
+                    return (new Knife());
                 default:
                     throw new Exception("unknown type weapon");
             }
@@ -36,6 +38,8 @@ public class FactoryWeapon {
                 return ("Dagger");
             case 3:
                 return ("Bow");
+            case 4:
+                return ("Knife");
         }
         return ("Fist");
     }

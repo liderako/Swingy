@@ -1,5 +1,11 @@
 package com.student.asvirido.swingy.module;
 
+import com.student.asvirido.swingy.module.artefact.armor.Armor;
+import com.student.asvirido.swingy.module.artefact.armor.FactoryArmor;
+import com.student.asvirido.swingy.module.artefact.helm.FactoryHelm;
+import com.student.asvirido.swingy.module.artefact.helm.Helm;
+import com.student.asvirido.swingy.module.artefact.weapon.FactoryWeapon;
+import com.student.asvirido.swingy.module.artefact.weapon.Weapon;
 import com.student.asvirido.swingy.module.database.DataManager;
 import com.student.asvirido.swingy.module.hero.FactoryHero;
 import com.student.asvirido.swingy.module.hero.Hero;
@@ -26,7 +32,7 @@ public class Model {
             hero.moveUp();
         }
         else if (direction.equals("East")) {
-            hero.moveLeft();
+            hero.moveRight();
         }
         else if (direction.equals("South")) {
             hero.moveDown();
@@ -36,17 +42,20 @@ public class Model {
         }
     }
 
-    public JSONObject selectHero() throws SQLException {
+    public JSONObject getJsonExistsHero() throws SQLException {
         return(dataManager.getHeroes());
     }
 
-    public boolean endMission() {
+    public boolean checkEndMission() throws SQLException {
         int level = this.hero.getLevel();
         int size = (level - 1) * 5 + 10 - (level % 2);
 
         if (hero.getPosition().getX() == 0 ||  hero.getPosition().getX() == size||
                 hero.getPosition().getY() == 0 || hero.getPosition().getY() == size)
         {
+            hero.initPosition();
+            hero.increaseExp(250);
+            dataManager.saveHero(hero);
             return (true);
         }
         return (false);
@@ -91,6 +100,33 @@ public class Model {
         }
     }
 
+    public Hero[] selectHero() throws IOException, SQLException {
+        JSONObject l = getJsonExistsHero();
+        Hero[] hero = new Hero[getAmountHeroes()];
+        int i = 0;
+        if (!l.get("Warrior").equals("not exists")) {
+            loadHero("Warrior");
+            hero[i] = getHero();
+            i++;
+        }
+        if (!l.get("Archer").equals("not exists")) {
+            loadHero("Archer");
+            hero[i] = getHero();
+            i++;
+        }
+        if (!l.get("Monk").equals("not exists")) {
+            loadHero("Monk");
+            hero[i] = getHero();
+            i++;
+        }
+        if (!l.get("Rogue").equals("not exists")) {
+            loadHero("Rogue");
+            hero[i] = getHero();
+            i++;
+        }
+        return (hero);
+    }
+
     public boolean createHero(final String name, final String type) throws IOException, SQLException{
         JSONObject heroes = dataManager.getHeroes();
         if (type.equals("Warrior") && !heroes.get("Warrior").equals("not exists")) {
@@ -113,7 +149,7 @@ public class Model {
     public boolean fight() {
         final String typeMonster = this.monster.getType();
 
-        this.monster = FactoryMonster.newMonster(this.monster.getType());
+        this.monster = FactoryMonster.newMonster(this.monster.getType(), hero.getLevel());
 
         if (typeMonster.equals("Death")) {
             return (false);
@@ -123,28 +159,41 @@ public class Model {
             int damageHero;
             int damageMonster;
             while (hero.getHp() > 0 && monster.getHp() > 0) {
-                damageHero = (monster.getDefence() - i) - ((new Random().nextInt((hero.getAttack() * 2) + 1) + hero.getAttack()));
-                damageMonster = (hero.getDefence() - i) - ((new Random().nextInt((monster.getAttack() * 2) + 1) + monster.getAttack()));
+                damageHero = (monster.getDefence() - i) - new Random().nextInt(hero.getAttack());
+                damageMonster = (hero.getDefence() - i) - new Random().nextInt(monster.getAttack());
                 if (damageHero < 0) {
                     monster.setHp(monster.getHp() - (damageHero * -1));
                 }
                 if (monster.getHp() <= 0) {
+                    hero.increaseExp(monster.getExp());
                     return (true);
                 }
+
                 if (damageMonster < 0) {
-                    hero.setHp(hero.getHp() - (damageMonster * -1));
+                    final int amountHp = hero.getHp() - (damageMonster * -1);
+                    hero.setHp(amountHp);
                 }
+
                 if (hero.getHp() <= 0) {
                     return (false);
                 }
                 i++;
             }
         }
+        hero.increaseExp(monster.getExp());
         return (true);
     }
 
+    public boolean findLoot() {
+        if (new Random().nextInt(10 - 1) > 2) {
+            generateMonster();
+            return (true);
+        }
+        return (false);
+    }
+
     public boolean findMonster() {
-        if (new Random().nextInt(10 - 1) > 5) {
+        if (new Random().nextInt(10 - 1) > 2) {
             generateMonster();
             return (true);
         }
@@ -157,7 +206,7 @@ public class Model {
 
     public int getAmountHeroes() throws SQLException {
         int amount = 0;
-        JSONObject heroes = selectHero();
+        JSONObject heroes = getJsonExistsHero();
 
         if (!heroes.get("Warrior").equals("not exists")) {
             amount++;
@@ -177,58 +226,51 @@ public class Model {
     public JSONObject generataLoot() {
         JSONObject loot = new JSONObject();
         int resTypeLoot = new Random().nextInt(4 - 1) + 1;
-        int resType = new Random().nextInt(5 - 1) + 1;
 
         if (resTypeLoot == 1) {
-            switch (resType) {
-                case 1:
-                    loot.put("Helm", "Hood");
-                    break ;
-                case 2:
-                    loot.put("Helm", "IronHelmet");
-                    break ;
-                case 3:
-                    loot.put("Helm", "LeatherHelmet");
-                    break ;
-                case 4:
-                    loot.put("Helm", "Hat");
-                    break ;
-            }
+            loot.put("Helm", FactoryHelm.randomType());
         }
         else if (resTypeLoot == 2) {
-            switch (resType) {
-                case 1:
-                    loot.put("Weapon", "Fist");
-                    break ;
-                case 2:
-                    loot.put("Weapon", "SwordWithShield");
-                    break ;
-                case 3:
-                    loot.put("Weapon", "Dagger");
-                    break ;
-                case 4:
-                    loot.put("Weapon", "Bow");
-                    break ;
-            }
+            loot.put("Weapon", FactoryWeapon.randomType());
         }
-        else {
-            switch (resType) {
-                case 1:
-                    loot.put("Armor","HeavyArmor");
-                    break ;
-                case 2:
-                    loot.put("Armor","LightArmor");
-                    break ;
-                case 3:
-                    loot.put("Armor","MediumArmor");
-                    break ;
-                case 4:
-                    loot.put("Armor","Shirt");
-                    break ;
-            }
+        else if (resTypeLoot == 3) {
+            loot.put("Armor", FactoryArmor.randomType());
         }
         return (loot);
     }
+
+    public void equipLoot(JSONObject typeArtefact) {
+        try {
+            Object ob = (String) typeArtefact.get("Weapon");
+            if (ob.equals("null")) {
+                throw new Exception("");
+            }
+            Weapon a = FactoryWeapon.newWeapon(ob.toString());
+            hero.equipWeapon(a);
+        }
+        catch (Exception e) { }
+
+        try {
+            Object ob = (String) typeArtefact.get("Helm");
+            if (ob.equals("null")) {
+                throw new Exception("");
+            }
+            Helm a = FactoryHelm.newHelm(ob.toString());
+            hero.equipHelm(a);
+        }
+        catch (Exception e) { }
+
+        try {
+            Object ob = (String) typeArtefact.get("Armor");
+            if (ob.equals("null")) {
+                throw new Exception("");
+            }
+            Armor a = FactoryArmor.newArmor(ob.toString());
+            hero.equipArmor(a);
+        }
+        catch (Exception e) { }
+    }
+
 
     public void end() throws Exception {
         dataManager.end();
@@ -242,9 +284,11 @@ public class Model {
 
     private void generateMonster() {
         if (hero.getLevel() >= 7) {
-            this.monster = FactoryMonster.newMonster("Death");
+            this.monster = FactoryMonster.newMonster("Death", 0);
         }
-        this.monster = FactoryMonster.newMonster(FactoryMonster.randomType());
+        else {
+            this.monster = FactoryMonster.newMonster(FactoryMonster.randomType(), hero.getLevel());
+        }
     }
 }
 

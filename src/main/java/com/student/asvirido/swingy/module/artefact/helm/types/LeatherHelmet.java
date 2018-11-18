@@ -4,6 +4,6 @@ import com.student.asvirido.swingy.module.artefact.helm.Helm;
 
 public class LeatherHelmet extends Helm {
     public LeatherHelmet() {
-        super(150, "LeatherHelmet");
+        super(50, "LeatherHelmet");
     }
 }

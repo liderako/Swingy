@@ -4,13 +4,13 @@ import com.student.asvirido.swingy.module.monster.Monster;
 import com.student.asvirido.swingy.module.monster.MonsterBuilder;
 
 public class BlackWolf extends Monster {
-    public BlackWolf() {
+    public BlackWolf(int level) {
         super(new MonsterBuilder()
                 .type("BlackWolf")
-                .attack(20)
-                .defence(5)
-                .hp(75)
-                .exp(50)
+                .attack(60 * level)
+                .defence(15 * level)
+                .hp(250 * level)
+                .exp(100 / level)
         );
     }
 }

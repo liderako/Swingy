@@ -23,6 +23,8 @@ public class Hero extends AliveObject{
         this.name = heroBuilder.getName();
         this.level = heroBuilder.getLevel();
         this.inventory = heroBuilder.getInventory();
+
+        initPosition();
     }
 
     public int getLevel() {
@@ -42,7 +44,7 @@ public class Hero extends AliveObject{
     }
 
     public int getHp() {
-        return (super.getHp() + inventory.getHelm().getBonusHp());
+        return (super.getHp());
     }
 
     public Position getPosition() {
@@ -54,9 +56,7 @@ public class Hero extends AliveObject{
     }
 
     public void setHp(final int hp) {
-        if (hp > 0) {
-            super.setHp(hp);
-        }
+        super.setHp(hp);
     }
 
     public void increaseExp(final int exp) {
@@ -67,56 +67,55 @@ public class Hero extends AliveObject{
     }
 
     public void increaseLevel() {
-        int needExp = (level * 1000 + (level - 1) * (level - 1) * 450);
+        int needExp = getNeedExp();
 
         if (this.getExp() > needExp) {
            this.level += 1;
            super.setMaxHp(super.getMaxHp() + 25);
            super.setHp(super.getMaxHp());
-           super.setAttack(super.getAttack() + 10);
-           super.setDefence(super.getDefence() + 10);
+           super.setAttack(super.getAttack() + 25);
+           super.setDefence(super.getDefence() + 25);
            super.setExp(this.getExp() - needExp);
         }
     }
 
-    public Helm equipHelm(final Helm helm) {
+    public void equipHelm(final Helm helm) {
         Helm oldHelm = inventory.getHelm();
 
         inventory.setHelm(helm);
-        return (oldHelm);
+        super.setHp(super.getHp() - oldHelm.getBonusHp());
+        super.setHp(super.getHp() + helm.getBonusHp());
     }
 
-    public Armor equipArmor(final Armor armor) {
+    public void equipArmor(final Armor armor) {
         Armor oldArmor = inventory.getArmor();
 
         inventory.setArmor(armor);
-        return (oldArmor);
     }
 
-    public Weapon equipWeapon(final Weapon weapon) {
+    public void equipWeapon(final Weapon weapon) {
         Weapon oldWeapon = inventory.getWeapon();
 
         inventory.setWeapon(weapon);
-        return (oldWeapon);
     }
 
     public void moveUp() {
-        oldPosition = position;
+        oldPosition = new Position(position.getX(), position.getY());
         position.setY(position.getY() - 1);
     }
 
     public void moveDown() {
-        oldPosition = position;
+        oldPosition = new Position(position.getX(), position.getY());
         position.setY(position.getY() + 1);
     }
 
     public void moveRight() {
-        oldPosition = position;
+        oldPosition = new Position(position.getX(), position.getY());
         position.setX(position.getX() + 1);
     }
 
     public void moveLeft() {
-        oldPosition = position;
+        oldPosition = new Position(position.getX(), position.getY());
         position.setX(position.getX() - 1);
     }
 
@@ -131,14 +130,32 @@ public class Hero extends AliveObject{
     public void log() {
         System.out.println("Type:" + super.getType());
         System.out.println("Name:" + name);
-        System.out.println("hp:" + this.getHp());
-        System.out.println("hpMax:" + super.getMaxHp());
-        System.out.println("attack:" + this.getAttack());
-        System.out.println("defence:" + this.getDefence());
-        System.out.println("exp:" + super.getExp());
-        System.out.println("level:" + level);
+
+        System.out.println("Hp all:" + getHp());
+        System.out.println("Hp hero:" + (super.getMaxHp()));
+        System.out.println("Hp bonus:" + getInventory().getHelm().getBonusHp());
+
+        System.out.println("Attack all: " + this.getAttack());
+        System.out.println("Attack hero:" + (this.getAttack() - getInventory().getWeapon().getDamage()));
+        System.out.println("Damage Weapon:" + getInventory().getWeapon().getDamage());
+
+        System.out.println("Defence all:" + this.getDefence());
+        System.out.println("Defence hero:" + (this.getDefence() - getInventory().getArmor().getDefence()));
+        System.out.println("Defence Armor:" + getInventory().getArmor().getDefence());
+
+        System.out.println("Exp:" + super.getExp() + "/" + getNeedExp());
+        System.out.println("Level:" + level);
         System.out.println("Weapon:" + getInventory().getWeapon().getType());
         System.out.println("Armor:" + getInventory().getArmor().getType());
         System.out.println("Helm:" + getInventory().getHelm().getType());
+    }
+
+    public int getNeedExp() {
+        return ((level * 1000 + (level - 1) * (level - 1) * 450));
+    }
+
+    public void initPosition() {
+        int sizeMap = ((getLevel() - 1) * 5 + 10 - (getLevel() % 2));
+        this.position = new Position( sizeMap / 2, sizeMap / 2  );
     }
 }
