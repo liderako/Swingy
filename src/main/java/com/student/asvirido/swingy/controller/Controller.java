@@ -22,6 +22,7 @@ public class Controller {
 
     public void run() throws SQLException, IOException,InterruptedException {
         String[] view = new String[] {"start"};
+        int timeClock = 0;
 
         if (status == 1) {
             while (true) {
@@ -39,8 +40,15 @@ public class Controller {
                 if (view[0].equals("end")) {
                     break;
                 }
-                System.out.println(view[0]);
                 TimeUnit.SECONDS.sleep(1);
+                System.out.println(view[0]);
+                if (gameView.getErrorFieldStatusVisible()) {
+                    timeClock++;
+                }
+                if (timeClock == 2) {
+                    gameView.setErrorFieldStatusVisible(false);
+                    timeClock = 0;
+                }
             }
         }
     }
@@ -50,11 +58,10 @@ public class Controller {
              gameView.displayStartView();
              String res = gameView.getStatusStartView();
              if (res.equals("Create Hero")) {
-                 gameView.switchOffStartView();
+                 gameView.displayCreateHeroView();
                  return (new String[] {"Create Hero"});
              }
              else if (res.equals("Select Hero")) {
-                 gameView.switchOffStartView();
                  return (new String[] {"Select Hero"});
              }
              else {
@@ -62,14 +69,33 @@ public class Controller {
              }
          }
          else if (view[0].equals("Create Hero")) {
+             String res = gameView.getStatusStartView();
+             if (res.equals("game")) {
+                 String typeHero = gameView.getTypeHero();
+                 String nameHero = gameView.getNameHero();
+                 if(!model.createHero(nameHero, typeHero)) {
+                     gameView.setErrorField(" Sorry, this is hero already exists.");
+                     gameView.setErrorFieldStatusVisible(true);
+                     gameView.setStatusStartView("Create Hero");
+                     return (new String[] {"Create Hero"});
+                 }
+                 else {
+                     model.loadHero(typeHero);
+                     return (new String[] {"game"});
+                 }
+             }
              return (new String[] {"Create Hero"});
          }
          else if (view[0].equals("Select Hero")) {
              return (new String[] {"Select Hero"});
          }
+         else if (view[0].equals("game")) {
+             gameView.displayGameView();
+             return (new String[] {"game"});
+         }
          return (new String[] {"start"});
     }
-
+#/
     private String[] runGame(String[] view) throws SQLException, IOException {
         if (status == 1) {
             if (view[0].equals("start")) {
