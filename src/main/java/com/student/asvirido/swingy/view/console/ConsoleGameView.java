@@ -16,11 +16,11 @@ public class ConsoleGameView extends ConsoleView {
         }
         System.out.print("\n");
 
-        for (int y = 0; y <= size; y++) {
+        for (int y = 0; y < size; y++) {
             System.out.print("|");
-            for (int x = 0; x <= size; x++) {
+            for (int x = 0; x < size; x++) {
                 if (x == hero.getPosition().getX() && y == hero.getPosition().getY()) {
-                    System.out.print("P");
+                    System.out.print("i");
                 }
                 else {
                     System.out.print(".");

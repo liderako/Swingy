@@ -23,7 +23,7 @@ public class Hero extends AliveObject{
         this.name = heroBuilder.getName();
         this.level = heroBuilder.getLevel();
         this.inventory = heroBuilder.getInventory();
-
+        super.setHp(super.getHp() + this.inventory.getHelm().getBonusHp());
         initPosition();
     }
 
@@ -82,20 +82,16 @@ public class Hero extends AliveObject{
     public void equipHelm(final Helm helm) {
         Helm oldHelm = inventory.getHelm();
 
-        inventory.setHelm(helm);
         super.setHp(super.getHp() - oldHelm.getBonusHp());
+        inventory.setHelm(helm);
         super.setHp(super.getHp() + helm.getBonusHp());
     }
 
     public void equipArmor(final Armor armor) {
-        Armor oldArmor = inventory.getArmor();
-
         inventory.setArmor(armor);
     }
 
     public void equipWeapon(final Weapon weapon) {
-        Weapon oldWeapon = inventory.getWeapon();
-
         inventory.setWeapon(weapon);
     }
 
@@ -148,6 +144,32 @@ public class Hero extends AliveObject{
         System.out.println("Weapon:" + getInventory().getWeapon().getType());
         System.out.println("Armor:" + getInventory().getArmor().getType());
         System.out.println("Helm:" + getInventory().getHelm().getType());
+    }
+
+    public String getLog() {
+        String s = "";
+
+        s += (" Type:" + super.getType() + "\n");
+        s +=(" Name:" + name + "\n");
+
+        s += (" Hp all:" + getHp() + "\n");
+        s += (" Hp hero:" + (super.getMaxHp()) + "\n");
+        s += (" Hp bonus:" + getInventory().getHelm().getBonusHp() + "\n");
+
+        s += (" Attack all: " + this.getAttack() + "\n");
+        s += (" Attack hero:" + (this.getAttack() - getInventory().getWeapon().getDamage()) + "\n");
+        s += (" Damage Weapon:" + getInventory().getWeapon().getDamage() + "\n");
+
+        s += (" Defence all:" + this.getDefence() + "\n");
+        s += (" Defence hero:" + (this.getDefence() - getInventory().getArmor().getDefence()) + "\n");
+        s += (" Defence Armor:" + getInventory().getArmor().getDefence() + "\n");
+
+        s += (" Exp:" + super.getExp() + "/" + getNeedExp() + "\n");
+        s += (" Level:" + level + "\n");
+        s += (" Weapon:" + getInventory().getWeapon().getType() + "\n");
+        s += (" Armor:" + getInventory().getArmor().getType() + "\n");
+        s += (" Helm:" + getInventory().getHelm().getType() + "\n");
+        return (s);
     }
 
     public int getNeedExp() {

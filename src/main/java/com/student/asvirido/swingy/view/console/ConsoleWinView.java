@@ -18,6 +18,7 @@ public class ConsoleWinView extends ConsoleView {
     public String startView(final Hero hero, final Monster m, JSONObject typeArtefact, boolean loot) {
         System.out.println("You win.");
         System.out.println("You got " + m.getExp() + " exp.");
+
         if (loot) {
             System.out.println("_______________________________________");
             System.out.println("Hero Weapon: " + hero.getInventory().getWeapon().getType() + " - damage: " + hero.getInventory().getWeapon().getDamage());
@@ -57,6 +58,7 @@ public class ConsoleWinView extends ConsoleView {
             catch (Exception e) { }
             System.out.println("_______________________________________");
         }
+
         String s = input();
         return (s);
     }

@@ -50,8 +50,8 @@ public class Model {
         int level = this.hero.getLevel();
         int size = (level - 1) * 5 + 10 - (level % 2);
 
-        if (hero.getPosition().getX() == 0 ||  hero.getPosition().getX() == size||
-                hero.getPosition().getY() == 0 || hero.getPosition().getY() == size)
+        if (hero.getPosition().getX() == 0 ||  hero.getPosition().getX() == size - 1||
+                hero.getPosition().getY() == 0 || hero.getPosition().getY() == size - 1)
         {
             hero.initPosition();
             hero.increaseExp(250);
@@ -283,7 +283,7 @@ public class Model {
     public final Monster getMonster() { return (monster); }
 
     private void generateMonster() {
-        if (hero.getLevel() >= 7) {
+        if (hero.getLevel() >= 5) {
             this.monster = FactoryMonster.newMonster("Death", 0);
         }
         else {
