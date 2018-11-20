@@ -3,7 +3,7 @@ package com.student.asvirido.swingy.view.console;
 public class ConsoleStartView extends ConsoleView {
 
     public ConsoleStartView() {
-        super( new String[] {"Create Hero", "Select Hero"});
+        super( new String[] {"Create Hero", "Select Hero", "gui"});
     }
 
     public String[] startView(int amount) {

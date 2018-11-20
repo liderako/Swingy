@@ -9,14 +9,20 @@ import com.student.asvirido.swingy.module.artefact.weapon.Weapon;
 import com.student.asvirido.swingy.module.hero.FactoryHero;
 import com.student.asvirido.swingy.module.hero.Hero;
 import com.student.asvirido.swingy.module.monster.Monster;
-import javafx.geometry.Bounds;
 import org.json.simple.JSONObject;
 
 import javax.swing.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 public class GameView extends JFrame {
     private Panel panelStartView;
@@ -33,8 +39,15 @@ public class GameView extends JFrame {
     private Font fontNorm;
 
     private String statusStartView;
+    @NotNull
+    @Pattern(regexp = "(Archer|Warrior|Monk|Rogue)", message = "Please choose type hero")
     private String typeHero;
+
+    @NotNull
+    @Size(min = 6, max = 12, message = "Name size 6-12 char")
+    @Pattern(regexp = "[A-Z_a-z_0-9]+", message = "Please write your name, only char and digital")
     private String nameHero;
+
     private String direction;
     private boolean isTakeLoot;
     private JSONObject loot;
@@ -57,11 +70,13 @@ public class GameView extends JFrame {
 
     public void displayStartView()  {
         offAll();
-        setCenterTwoButtons();
+        setCenterThreeButtons();
         buttonOne.setVisible(true);
         buttonTwo.setVisible(true);
+        buttonThree.setVisible(true);
         buttonOne.setText("Create Hero");
         buttonTwo.setText("Select Hero");
+        buttonThree.setText("Console");
     }
 
     public void displayBattleView(final Hero hero, final Monster monster) {
@@ -100,6 +115,11 @@ public class GameView extends JFrame {
         errorField.setBounds(400, 100, 215, 20);
         heroesData.setFont(fontNorm);
         initHeroesDataCreateHero();
+    }
+
+    public void end() {
+        setVisible(false);
+        dispose();
     }
 
     public void displaySelectHeroView(int amountHero, Hero heroes[]) {
@@ -316,6 +336,9 @@ public class GameView extends JFrame {
                 else if (statusStartView.equals("game")) {
                     direction = buttonThree.getText();
                 }
+                if (statusStartView.equals("start")) {
+                    statusStartView = "console";
+                }
             }
         });
     }
@@ -343,26 +366,44 @@ public class GameView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (statusStartView.equals("Create Hero")) {
+                    nameHero = nameField.getText();
                     errorManagerCreateHero();
                 }
             }
         });
     }
 
+    private String validate(Object object, Validator validator) {
+        Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object);
+        String s = "";
+
+        System.out.println(String.format("Count error: %d", constraintViolations.size()));
+
+        for (ConstraintViolation<Object> cv : constraintViolations) {
+            System.out.println(cv.getMessage());
+            s += cv.getMessage();
+            s += "\n";
+        }
+        if (constraintViolations.size() == 0) {
+            return ("Okay");
+        }
+        return (s);
+    }
+
+
     private void errorManagerCreateHero() {
-        if (nameField.getText().length() >= 6 && nameField.getText().length() <= 21 && !typeHero.equals("null")) {
-            nameHero = nameField.getText();
+        ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
+        Validator validator = vf.getValidator();
+
+        String res = validate(this, validator);
+
+        if (res.equals("Okay")) {
             statusStartView = "game";
         }
-        else if (nameField.getText().length() < 6 || nameField.getText().length() > 21){
-            errorField.setText("Name size 6-21 char");
+        else {
+            errorField.setText(res);
             errorField.setVisible(true);
-            errorField.setBounds(400, 100, 215, 20);
-        }
-        else if (typeHero.equals("null")) {
-            errorField.setText("Please choose type hero");
-            errorField.setVisible(true);
-            errorField.setBounds(400, 100, 215, 20);
+            errorField.setBounds(400, 100, 350, 50);
         }
     }
 

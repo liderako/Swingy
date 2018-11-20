@@ -26,35 +26,35 @@ public class Controller {
         String[] view = new String[] {"start"};
         int timeClock = 0;
 
-        if (status == 1) {
-            while (true) {
-                view = runGame(view);
-                if (view[0].equals("end")) {
-                    break;
-                }
-            }
-        }
-        else if (status == 2) {
-            gameView = new GameView();
-
-            while (true) {
-                view = runGameGui(view);
-                if (view[0].equals("end")) {
-                    break;
-                }
-
-                if (view[0].equals("Create Hero")) {
-                    TimeUnit.SECONDS.sleep(1);
-                    if (gameView.getErrorFieldStatusVisible()) {
-                        timeClock++;
-                    }
-                    if (timeClock == 2) {
-                        gameView.setErrorFieldStatusVisible(false);
-                        timeClock = 0;
+        while (true) {
+            if (status == 1) {
+                view[0] = "start";
+                while (true) {
+                    view = runGame(view);
+                    if (view[0].equals("end")) {
+                        break;
                     }
                 }
-                else {
-                    TimeUnit.MICROSECONDS.sleep(400);
+            } else {
+                gameView = new GameView();
+                view[0] = "start";
+                while (true) {
+                    view = runGameGui(view);
+                    if (view[0].equals("end")) {
+                        break;
+                    }
+                    if (view[0].equals("Create Hero")) {
+                        TimeUnit.SECONDS.sleep(1);
+                        if (gameView.getErrorFieldStatusVisible()) {
+                            timeClock++;
+                        }
+                        if (timeClock == 2) {
+                            gameView.setErrorFieldStatusVisible(false);
+                            timeClock = 0;
+                        }
+                    } else {
+                        TimeUnit.MICROSECONDS.sleep(400);
+                    }
                 }
             }
         }
@@ -91,6 +91,11 @@ public class Controller {
                  }
                  gameView.displaySelectHeroView(model.getAmountHeroes(),model.selectHero());
                  return (new String[] {"Select Hero"});
+             }
+             else if (res.equals("console")) {
+                 status = 1;
+                 gameView.end();
+                 return (new String[] {"end"});
              }
              else {
                  return (new String[] {"start"});
@@ -237,6 +242,10 @@ public class Controller {
                     model.loadHero(res[1]);
                     return (new String[] {"game"});
                 }
+            }
+            else if (view[0].equals("gui")) {
+                status = 2;
+                return (new String[]{"end"});
             }
             else if (view[0].equals("Select Hero")) {
                 Hero[] hero = model.selectHero();

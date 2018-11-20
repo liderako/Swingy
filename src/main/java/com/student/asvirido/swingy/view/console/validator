@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-class Main {
+class com.student.asvirido.swingy.Main {
 
     @NotNull(message="Имя должно быть задано")
     String firstname;
@@ -48,7 +48,7 @@ class Main {
         Validator validator = vf.getValidator();
 
         System.out.println("wtf");
-        Main user = new Main();
+        com.student.asvirido.swingy.Main user = new com.student.asvirido.swingy.Main();
         validate(user, validator);
 
         user.firstname = "Вася";
