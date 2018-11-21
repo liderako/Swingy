@@ -9,7 +9,7 @@ public class Monk extends Hero {
         super(new HeroBuilder()
                 .name(name)
                 .type("Monk")
-                .attack(0)
+                .attack(20)
                 .defence(20)
                 .hp(350)
                 .maxHp(350)

@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) throws Exception{
         if (args.length != 1) {
             usage();
+            return ;
         }
         Controller controller;
 
@@ -25,6 +26,6 @@ public class Main {
     }
 
     public static void usage() {
-        System.out.println("Usage:\n$java -jar swingy.jar console\n$java -jar swingy.jar gui\n");
+        System.out.println("Usage:\n$java -jar swingy.jar console\n$java -jar swingy.jar gui");
     }
 }
